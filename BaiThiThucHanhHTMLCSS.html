@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Em Yêu Thầy</title>
+    <style>
+        * {
+            font-family: "Segoe UI",Arial,sans-serif;
+            box-sizing: border-box;
+        }
+        header{
+            width: 100%;
+            height: 110px;
+            background-color: white;
+            opacity: 0.8;
+        }
+        .logo {
+            width: 300px;
+            height: 300px;
+            float: left;
+            margin: 20px;
+        }
+        .logo-title {
+            color: black;
+            font-size: 60px;
+            float: left;
+            margin-top: 118px ;
+        }
+        .banner {
+            height: auto;
+            float: right;
+        }
+        .container{
+            margin-top: 280px;
+        }
+        .input-container {
+            display: -ms-flexbox;
+            display: flex;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border: 2px solid #000000;
+        }
+
+        .btn {
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            opacity: 0.9;
+        }
+
+        .btn:hover {
+            opacity: 1;
+        }
+        .loginform{
+            max-width:500px;
+            margin:auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img class="logo" src="https://image.freepik.com/free-icon/healthy-lifestyle-logo_318-52683.jpg" alt="icon">
+        <p class="logo-title">JUST DO IT</p>
+        <img class="banner" src="https://www.thoughtsinvinyl.com/Images/Medium/wl255jpg20140919013115.jpg" alt="banner">
+    </header>
+    <div class="container">
+        <form name="register-form">
+            <fieldset>
+                <legend>Register Form For User</legend>
+                <form class="loginform">
+                    <div class="input-container">
+                        <lable>Name</lable>
+                        <input class="input-field" type="text" placeholder="Name" name="usrnm" required id="name">
+                    </div>
+
+                    <div class="input-container">
+                        <lable>Email</lable>
+                        <input class="input-field" type="email" placeholder="Email" name="email" id="email">
+                    </div>
+                    <div>
+                        <lable>Gender</lable>
+                        <label>Male
+                            <input type="radio" checked="checked" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label>Female
+                            <input type="radio" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label>Other
+                            <input type="radio" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="input-container">
+                        <lable>Phone</lable>
+                        <input class="input-field" type="text" placeholder="Phone" name="psw" required id="phone">
+                    </div>
+                    <div class="input-container">
+                        <lable>Favourite : </lable>
+                        <hr>
+                        <label>Sport
+                            <input type="checkbox" checked="checked" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                        <hr>
+                        <label>Film
+                            <input type="checkbox" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                        <hr>
+                        <label>Read Book
+                            <input type="checkbox" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                        <hr>
+                        <label>Music
+                            <input type="checkbox" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                        <hr>
+                        <label>Other
+                            <input type="checkbox" name="radio">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <lable>Information Of Yourself</lable>
+                    <textarea name="message" rows="5" cols="50"></textarea>
+                    <button type="submit" class="btn" name="btn-register" id="register">Register</button>
+            </fieldset>
+        </form>
+    </div>
+    <div class="footer">
+        <form>
+        <fieldset>
+            <legend>Information Of Myself</legend>
+            <div class="input-container">
+                <lable>Name : Nguyễn Tuấn Anh</lable>
+            </div>
+            <div class="input-container">
+                <lable>Email : anhntth1807026@fpt.edu.vn</lable>
+            </div>
+            <div class="input-container">
+                <lable>Class : T1808A</lable>
+            </div>
+        </fieldset>
+        </form>
+    </div>
+    <script>
+        var REGISTER_API = 'https://2-dot-backup-server-003.appspot.com/_api/v2/members';
+        var btnRegister = document.forms['register-form']['btn-register'];
+        if (btnRegister != null) {
+            btnRegister.onclick = function () {
+                var name = document.getElementById("name").value;
+                var email = document.getElementById("email").value;
+                var phone = document.getElementById("phone").value;
+                if (genderText == "male") {
+                    gender = 1;
+                } else if (genderText == "female") {
+                    gender = 2;
+                } else {
+                    gender = 0
+                }
+                var informember = {
+                    name: name,
+                    email: email,
+                    phone: phone,
+
+                }
+                postRegisterData(informember);
+            }
+        }
+
+        function postRegisterData(jsonData) {
+            var xmlHttpRequest = new XMLHttpRequest();
+            xmlHttpRequest.onreadystatechange = function () {
+                if (this.readyState == XMLHttpRequest.DONE && this.status == 201) {
+                    var member = JSON.parse(this.responseText);
+                    alert(JSON.stringify(member));
+                } else if(this.status == 400 || this.status == 404)  {
+                    var member = JSON.parse(this.responseText);
+                    alert(JSON.stringify(member.error));
+                }
+            }
+            xmlHttpRequest.open('POST', REGISTER_API, true);
+            xmlHttpRequest.setRequestHeader("Content-type", "application/json");
+            xmlHttpRequest.send(JSON.stringify(jsonData));
+        }
+    </script>
+</body>
+</html>
